@@ -1,33 +1,19 @@
-import { useEffect, useState } from 'react';
-
-interface Post {
-  title: string;
-  author: string;
-  likes: string[];
-  body: string[];
-  _id: string;
-}
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Layout from './components/Layout';
+import Home from './pages/home';
 
 const App = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const res = await fetch('/api/posts');
-      const data = await res.json();
-
-      setPosts(data.data as Post[]);
-    };
-
-    fetchPosts();
-  }, []);
-
   return (
-    <div>
-      {posts.map((post) => {
-        return <div key={post._id}>{post.title}</div>;
-      })}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="/sign-up" element={<></>} />
+          <Route path="/login" element={<></>} />
+          <Route path="/post/:postId" element={<></>} />
+        </Route>
+      </Routes>
+    </Router>
   );
 };
 
