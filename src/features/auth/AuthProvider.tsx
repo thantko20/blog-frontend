@@ -47,7 +47,7 @@ const userReducer = (state: IState, action: AuthAction) => {
   }
 };
 
-export const UserProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, dispatch] = useReducer(userReducer, null);
   const navigate = useNavigate();
 
