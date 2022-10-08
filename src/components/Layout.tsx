@@ -7,7 +7,7 @@ const Logo = () => {
 
 const Nav = () => {
   const { user, logout } = useAuth();
-  return <h2>haha</h2>;
+  return <h2>Navigation</h2>;
 };
 
 const Header = () => {

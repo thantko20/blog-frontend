@@ -1,8 +1,10 @@
+import { Button } from '@chakra-ui/react';
+
 const Home = () => {
   return (
     <>
       <h1>This is home</h1>
-      <button>Button</button>
+      <Button>Sign Up</Button>
     </>
   );
 };

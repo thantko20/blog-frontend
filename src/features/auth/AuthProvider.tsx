@@ -1,10 +1,9 @@
 import { createContext, ReactNode, useContext, useReducer } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { IUser } from './types';
 
 interface AuthContextValueType {
   user: IUser | null | undefined;
-  signUp: (signUpCreds: SignUpCredsType) => void;
+  signUp: (signUpCreds: ISignUpCreds) => void;
   login: () => void;
   logout: () => void;
 }
@@ -27,7 +26,7 @@ const AuthContext = createContext<AuthContextValueType>(
 
 type IState = IUser | null | undefined;
 
-export interface SignUpCredsType {
+export interface ISignUpCreds {
   email: string;
   firstName: string;
   lastName: string;
@@ -49,7 +48,6 @@ const userReducer = (state: IState, action: AuthAction) => {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, dispatch] = useReducer(userReducer, null);
-  const navigate = useNavigate();
 
   const login = () => {
     // TODO
@@ -59,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // TODO
   };
 
-  const signUp = async (signUpCreds: SignUpCredsType) => {
+  const signUp = async (signUpCreds: ISignUpCreds) => {
     const res = await fetch('/api/sign-up', {
       method: 'post',
       headers: {
@@ -67,13 +65,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       },
       body: JSON.stringify(signUpCreds),
     });
-
-    if (res.ok) {
-      navigate('/login');
-    } else {
-      // might deal with this later.
-      console.log('Sign Up failed.');
-    }
   };
 
   const value = {
