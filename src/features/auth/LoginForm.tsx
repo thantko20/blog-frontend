@@ -11,42 +11,37 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import { useSignUp } from './api/useSignUp';
-import { ISignUpCreds } from './types';
+import { useLogin } from './api/useLogin';
+import { ILoginCreds } from './types';
 
 const schema = yup.object({
   email: yup.string().email('Must be a valid email').required(),
-  firstName: yup
-    .string()
-    .min(2, 'Must be at least 2 characters long')
-    .required(),
-  lastName: yup
-    .string()
-    .min(2, 'Must be at least 2 characters long')
-    .required(),
   password: yup
     .string()
     .min(8, 'Must be at least 8 characters long.')
     .required(),
 });
 
-const SignUpForm = () => {
+const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ISignUpCreds>({
+  } = useForm<ILoginCreds>({
     resolver: yupResolver(schema),
   });
 
-  const mutation = useSignUp();
+  const mutation = useLogin();
   const navigate = useNavigate();
+  const { loggedIn } = useAuth();
 
-  const onSubmit = (data: ISignUpCreds) => {
-    mutation.mutate(data, {
-      onSuccess: () => {
-        navigate('/login');
+  const onSubmit = (formData: ILoginCreds) => {
+    mutation.mutate(formData, {
+      onSuccess: (data) => {
+        loggedIn(data);
+        navigate('/');
       },
     });
   };
@@ -68,16 +63,6 @@ const SignUpForm = () => {
             <Input {...register('password')} id="password" type="password" />
             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="firstName">First Name</FormLabel>
-            <Input {...register('firstName')} id="firstName" type="text" />
-            <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="lastName">Last Name</FormLabel>
-            <Input {...register('lastName')} id="lastName" type="text" />
-            <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
-          </FormControl>
           <Button
             type="submit"
             isLoading={mutation.isLoading}
@@ -91,4 +76,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default LoginForm;

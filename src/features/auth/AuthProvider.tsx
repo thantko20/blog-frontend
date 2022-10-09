@@ -1,77 +1,99 @@
-import { createContext, ReactNode, useContext, useReducer } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useReducer,
+} from 'react';
 import { IUser } from './types';
 
-interface AuthContextValueType {
+interface IAuthContextValue {
   user: IUser | null | undefined;
-  signUp: (signUpCreds: ISignUpCreds) => void;
-  login: () => void;
-  logout: () => void;
+  isLoggedIn: boolean;
+  checkingStatus: boolean;
+  loggedIn: (data: IUser) => void;
+  loggedOut: () => void;
 }
 
-const initialAuthContextValue: AuthContextValueType = {
+interface IAuthState {
+  user: IUser | null | undefined;
+  isLoggedIn: boolean;
+  checkingStatus: boolean;
+}
+
+const initialAuthContextValue: IAuthContextValue = {
   user: null,
-  signUp: () => {},
-  login: () => {},
-  logout: () => {},
+  isLoggedIn: false,
+  checkingStatus: true,
+  loggedIn: (data: IUser) => {},
+  loggedOut: () => {},
 };
 
 interface AuthAction {
-  type: 'LOGIN' | 'LOGOUT';
-  payload: IUser | null | undefined;
+  type: 'CHECKING' | 'LOGGED_IN' | 'LOGGED_OUT';
+  payload?: IUser | null | undefined;
 }
 
-const AuthContext = createContext<AuthContextValueType>(
-  initialAuthContextValue
-);
+const AuthContext = createContext<IAuthContextValue>(initialAuthContextValue);
 
-type IState = IUser | null | undefined;
-
-export interface ISignUpCreds {
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-}
-
-const userReducer = (state: IState, action: AuthAction) => {
+const userReducer = (state: IAuthState, action: AuthAction) => {
   switch (action.type) {
-    case 'LOGIN': {
-      return action.payload;
+    case 'CHECKING': {
+      return {
+        ...state,
+        isLoggedIn: false,
+        checkingStatus: true,
+      };
     }
-    case 'LOGOUT': {
-      return null;
+    case 'LOGGED_IN': {
+      return {
+        user: action.payload,
+        isLoggedIn: true,
+        checkingStatus: false,
+      };
+    }
+    case 'LOGGED_OUT': {
+      return {
+        ...state,
+        user: null,
+        isLoggedIn: false,
+      };
     }
     default:
       return state;
   }
 };
 
+const initialAuthState: IAuthState = {
+  user: null,
+  isLoggedIn: false,
+  checkingStatus: true,
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, dispatch] = useReducer(userReducer, null);
+  const [{ user, isLoggedIn, checkingStatus }, dispatch] = useReducer(
+    userReducer,
+    initialAuthState
+  );
 
-  const login = () => {
-    // TODO
+  useEffect(() => {
+    // TODO: check auth in every page refresh
+  }, []);
+
+  const loggedIn = (data: IUser) => {
+    dispatch({ type: 'LOGGED_IN', payload: data });
   };
 
-  const logout = () => {
-    // TODO
-  };
-
-  const signUp = async (signUpCreds: ISignUpCreds) => {
-    const res = await fetch('/api/sign-up', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(signUpCreds),
-    });
+  const loggedOut = () => {
+    dispatch({ type: 'LOGGED_OUT' });
   };
 
   const value = {
     user,
-    login,
-    logout,
-    signUp,
+    loggedIn,
+    loggedOut,
+    isLoggedIn,
+    checkingStatus,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
