@@ -58,22 +58,22 @@ const SignUpForm = () => {
           <Text color="red">{(mutation.error as Error).message}</Text>
         )}
         <VStack maxW="50rem" gap={4} alignItems="start">
-          <FormControl>
+          <FormControl isInvalid={!!errors?.email}>
             <FormLabel htmlFor="email">Email</FormLabel>
             <Input {...register('email')} id="email" type="email" />
             <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={!!errors?.password}>
             <FormLabel htmlFor="password">Password</FormLabel>
             <Input {...register('password')} id="password" type="password" />
             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={!!errors?.firstName}>
             <FormLabel htmlFor="firstName">First Name</FormLabel>
             <Input {...register('firstName')} id="firstName" type="text" />
             <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={!!errors?.lastName}>
             <FormLabel htmlFor="lastName">Last Name</FormLabel>
             <Input {...register('lastName')} id="lastName" type="text" />
             <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>

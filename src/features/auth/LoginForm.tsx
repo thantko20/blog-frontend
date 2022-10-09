@@ -53,15 +53,17 @@ const LoginForm = () => {
           <Text color="red">{(mutation.error as Error).message}</Text>
         )}
         <VStack maxW="50rem" gap={4} alignItems="start">
-          <FormControl>
+          <FormControl isInvalid={!!errors?.email}>
             <FormLabel htmlFor="email">Email</FormLabel>
             <Input {...register('email')} id="email" type="email" />
             <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={!!errors?.password}>
             <FormLabel htmlFor="password">Password</FormLabel>
             <Input {...register('password')} id="password" type="password" />
-            <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+            <FormErrorMessage as="p">
+              {errors.password?.message}
+            </FormErrorMessage>
           </FormControl>
           <Button
             type="submit"
