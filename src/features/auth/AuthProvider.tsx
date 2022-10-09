@@ -78,6 +78,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // TODO: check auth in every page refresh
+    const fetchUser = async () => {
+      dispatch({ type: 'CHECKING' });
+      const token = localStorage.getItem('auth-token');
+      if (!token) {
+        loggedOut();
+        return;
+      }
+
+      const res = await fetch('/api/user', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        loggedOut();
+        return;
+      }
+
+      const data = await res.json();
+      loggedIn(data.data as IUser);
+    };
+    fetchUser();
   }, []);
 
   const loggedIn = (data: IUser) => {
