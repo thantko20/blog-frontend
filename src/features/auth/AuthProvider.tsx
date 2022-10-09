@@ -57,6 +57,7 @@ const userReducer = (state: IAuthState, action: AuthAction) => {
         ...state,
         user: null,
         isLoggedIn: false,
+        checkingStatus: false,
       };
     }
     default:
@@ -67,7 +68,7 @@ const userReducer = (state: IAuthState, action: AuthAction) => {
 const initialAuthState: IAuthState = {
   user: null,
   isLoggedIn: false,
-  checkingStatus: true,
+  checkingStatus: false,
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -93,6 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (!res.ok) {
+        localStorage.removeItem('auth-token');
         loggedOut();
         return;
       }
