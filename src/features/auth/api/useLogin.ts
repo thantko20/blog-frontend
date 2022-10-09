@@ -21,7 +21,5 @@ const login = async (loginCreds: ILoginCreds) => {
 };
 
 export const useLogin = () => {
-  return useMutation((loginCreds: ILoginCreds) => {
-    return login(loginCreds);
-  });
+  return useMutation(login);
 };

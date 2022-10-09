@@ -68,7 +68,7 @@ const LoginForm = () => {
             isLoading={mutation.isLoading}
             colorScheme="blue"
           >
-            Sign Up
+            Login
           </Button>
         </VStack>
       </form>

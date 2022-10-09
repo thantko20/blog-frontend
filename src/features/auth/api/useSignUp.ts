@@ -17,7 +17,5 @@ const signUp = async (signUpCreds: ISignUpCreds) => {
 };
 
 export const useSignUp = () => {
-  return useMutation((data: ISignUpCreds) => {
-    return signUp(data);
-  });
+  return useMutation(signUp);
 };
