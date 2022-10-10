@@ -16,3 +16,8 @@ export type TPostAuthor =
     }
   | null
   | undefined;
+
+export interface IPostFormData {
+  title: string;
+  body: string;
+}

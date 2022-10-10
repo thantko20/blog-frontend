@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Heading,
+  HStack,
   Menu,
   MenuButton,
   MenuItem,
@@ -12,6 +13,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { BiChevronDown } from 'react-icons/bi';
 import { usePosts } from './api/usePosts';
 import PostCard from './PostCard';
@@ -43,7 +45,17 @@ const PostsContainer = () => {
 
   return (
     <Box>
-      <Heading as="h2">Posts</Heading>
+      <HStack justifyContent="space-between" alignItems="center">
+        <Heading as="h2">Posts</Heading>
+        <Button
+          as={RouterLink}
+          to="/posts/create"
+          variant="ghost"
+          colorScheme="blue"
+        >
+          Create A Post
+        </Button>
+      </HStack>
       <Menu>
         <MenuButton
           as={Button}
