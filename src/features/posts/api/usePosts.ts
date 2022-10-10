@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { TFieldNameFilters, TSortOrder } from '../../type';
 import { IPost } from '../types';
 
+// Note: Filters will be refactored
+// due to its unecessary complexities.
+
 interface IPostFilters {
   fieldName?: TFieldNameFilters;
   sortOrder?: TSortOrder;

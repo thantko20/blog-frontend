@@ -5,7 +5,9 @@ import {
   Menu,
   MenuButton,
   MenuItem,
+  MenuItemOption,
   MenuList,
+  MenuOptionGroup,
   Skeleton,
   VStack,
 } from '@chakra-ui/react';
@@ -14,13 +16,30 @@ import { BiChevronDown } from 'react-icons/bi';
 import { usePosts } from './api/usePosts';
 import PostCard from './PostCard';
 
+const useFilteredPosts = () => {
+  const { setFieldNameFilters, ...rest } = usePosts();
+  const [text, setText] = useState('Latest');
+
+  const sortByLatest = () => {
+    setFieldNameFilters('createdAt');
+    setText('Latest');
+  };
+  const sortByTop = () => {
+    setFieldNameFilters('likes');
+    setText('Top');
+  };
+
+  return { ...rest, sortByLatest, sortByTop, text };
+};
+
 const PostsContainer = () => {
   const {
     data: posts,
     isFetching,
-    setFieldNameFilters,
-    setSortOrderFilters,
-  } = usePosts();
+    sortByLatest,
+    sortByTop,
+    text,
+  } = useFilteredPosts();
 
   return (
     <Box>
@@ -34,15 +53,17 @@ const PostsContainer = () => {
           size="sm"
           mt={4}
         >
-          Sort By
+          {text}
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={() => setFieldNameFilters('createdAt')}>
-            Latest Posts
-          </MenuItem>
-          <MenuItem onClick={() => setFieldNameFilters('likes')}>
-            Top Posts
-          </MenuItem>
+          <MenuOptionGroup defaultValue={text} title="Sort By" type="radio">
+            <MenuItemOption onClick={() => sortByLatest()} value="Latest">
+              Latest
+            </MenuItemOption>
+            <MenuItemOption onClick={() => sortByTop()} value="Top">
+              Top
+            </MenuItemOption>
+          </MenuOptionGroup>
         </MenuList>
       </Menu>
       <VStack mt={4} spacing="1.5rem">

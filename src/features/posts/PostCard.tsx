@@ -12,6 +12,7 @@ const PostCard = ({ title, author, likes, _id, createdAt }: IPost) => {
       p="1rem"
       rounded="md"
       role="group"
+      bgColor="whiteAlpha.900"
     >
       <Box as="time" dateTime={createdAt} fontSize="sm" color="gray.600">
         {formatDistanceToNow(new Date(createdAt))} ago
