@@ -9,12 +9,14 @@ import {
   FormLabel,
   Input,
   Text,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { useLogin } from './api/useLogin';
 import { ILoginCreds } from './types';
+import Form from '../../components/Form';
 
 const schema = yup.object({
   email: yup.string().email('Must be a valid email').required(),
@@ -36,6 +38,7 @@ const LoginForm = () => {
   const mutation = useLogin();
   const navigate = useNavigate();
   const { loggedIn } = useAuth();
+  const toast = useToast();
 
   const onSubmit = (formData: ILoginCreds) => {
     mutation.mutate(formData, {
@@ -43,38 +46,36 @@ const LoginForm = () => {
         loggedIn(data);
         navigate('/');
       },
+      onError: (error) => {
+        if (error instanceof Error) {
+          toast({
+            title: error.message,
+            position: 'top',
+            status: 'error',
+            duration: 8000,
+            isClosable: true,
+          });
+        }
+      },
     });
   };
 
   return (
-    <Container>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {mutation.isError && (
-          <Text color="red">{(mutation.error as Error).message}</Text>
-        )}
-        <VStack maxW="50rem" gap={4} alignItems="start">
-          <FormControl isInvalid={!!errors?.email}>
-            <FormLabel htmlFor="email">Email</FormLabel>
-            <Input {...register('email')} id="email" type="email" />
-            <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={!!errors?.password}>
-            <FormLabel htmlFor="password">Password</FormLabel>
-            <Input {...register('password')} id="password" type="password" />
-            <FormErrorMessage as="p">
-              {errors.password?.message}
-            </FormErrorMessage>
-          </FormControl>
-          <Button
-            type="submit"
-            isLoading={mutation.isLoading}
-            colorScheme="blue"
-          >
-            Login
-          </Button>
-        </VStack>
-      </form>
-    </Container>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <FormControl isInvalid={!!errors?.email}>
+        <FormLabel htmlFor="email">Email</FormLabel>
+        <Input {...register('email')} id="email" type="email" />
+        <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+      </FormControl>
+      <FormControl isInvalid={!!errors?.password}>
+        <FormLabel htmlFor="password">Password</FormLabel>
+        <Input {...register('password')} id="password" type="password" />
+        <FormErrorMessage as="p">{errors.password?.message}</FormErrorMessage>
+      </FormControl>
+      <Button type="submit" isLoading={mutation.isLoading} colorScheme="blue">
+        Login
+      </Button>
+    </Form>
   );
 };
 
