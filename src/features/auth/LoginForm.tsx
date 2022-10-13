@@ -61,7 +61,7 @@ const LoginForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} title="Login">
       <FormControl isInvalid={!!errors?.email}>
         <FormLabel htmlFor="email">Email</FormLabel>
         <Input {...register('email')} id="email" type="email" />
