@@ -66,7 +66,7 @@ const CreatePostForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} title="Create Post">
       <FormControl isInvalid={!!errors.title}>
         <FormLabel htmlFor="title">Title</FormLabel>
         <Input {...register('title')} id="title" type="text" />
