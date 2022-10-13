@@ -1,19 +1,28 @@
 import { useMutation } from '@tanstack/react-query';
-import { IPostFormData } from '../types';
+import { IPost, IPostFormData } from '../types';
 
-const createPost = async (data: IPostFormData) => {
-  const res = await fetch(`/api/posts`, {
+const createPost = async (postData: IPostFormData) => {
+  const token = localStorage.getItem('auth-token');
+  if (!token) {
+    throw Error('Please Login To Post.');
+  }
+
+  const res = await fetch('/api/posts', {
     method: 'post',
     headers: {
-      authorization: `Bearer ${localStorage.getItem('auth-token')}`,
+      authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
+
+    body: JSON.stringify(postData),
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    const data = await res.json();
     throw new Error(data.message as string);
   }
+  return data.postId as string;
 };
 
 export const useCreatePost = () => {

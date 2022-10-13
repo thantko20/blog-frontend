@@ -2,7 +2,7 @@ export interface IPost {
   title: string;
   author: TPostAuthor;
   likes: string[];
-  body: string;
+  content: string;
   createdAt: string;
   updatedAt: string;
   _id: string;
@@ -19,5 +19,5 @@ export type TPostAuthor =
 
 export interface IPostFormData {
   title: string;
-  body: string;
+  content: string;
 }

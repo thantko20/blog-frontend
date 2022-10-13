@@ -18,11 +18,11 @@ const Post = () => {
       {post && !isFetching && (
         <>
           <Heading as="h1">{post?.title}</Heading>
-          <Prose>
-            <div
-              dangerouslySetInnerHTML={{ __html: post?.body as string }}
-            ></div>
-          </Prose>
+          <Box
+            dangerouslySetInnerHTML={{ __html: post?.content as string }}
+            className="prose"
+            mt="2rem"
+          ></Box>
         </>
       )}
     </Box>

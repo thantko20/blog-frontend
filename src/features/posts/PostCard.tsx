@@ -17,7 +17,14 @@ const PostCard = ({ title, author, likes, _id, createdAt }: IPost) => {
       <Box as="time" dateTime={createdAt} fontSize="sm" color="gray.600">
         {formatDistanceToNow(new Date(createdAt))} ago
       </Box>
-      <Heading as="h3" textOverflow="ellipsis" fontSize="2xl">
+      <Heading
+        as="h3"
+        whiteSpace="nowrap"
+        textOverflow="ellipsis"
+        overflow="hidden"
+        fontSize="2xl"
+        title={title}
+      >
         <LinkOverlay
           as={RouterLink}
           to={`/posts/${_id}`}
