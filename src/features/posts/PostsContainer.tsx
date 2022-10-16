@@ -27,7 +27,7 @@ const useFilteredPosts = () => {
     setText('Latest');
   };
   const sortByTop = () => {
-    setFieldNameFilters('likes');
+    setFieldNameFilters('likesCount');
     setText('Top');
   };
 
@@ -45,13 +45,13 @@ const PostsContainer = () => {
 
   return (
     <Box>
-      <HStack justifyContent="space-between" alignItems="center">
-        <Heading as="h2">Posts</Heading>
+      <HStack justifyContent='space-between' alignItems='center'>
+        <Heading as='h2'>Posts</Heading>
         <Button
           as={RouterLink}
-          to="/posts/create"
-          variant="ghost"
-          colorScheme="blue"
+          to='/posts/create'
+          variant='ghost'
+          colorScheme='blue'
         >
           Create A Post
         </Button>
@@ -60,30 +60,30 @@ const PostsContainer = () => {
         <MenuButton
           as={Button}
           rightIcon={<BiChevronDown />}
-          variant="outline"
-          colorScheme="blue"
-          size="sm"
+          variant='outline'
+          colorScheme='blue'
+          size='sm'
           mt={4}
         >
           {text}
         </MenuButton>
         <MenuList>
-          <MenuOptionGroup defaultValue={text} title="Sort By" type="radio">
-            <MenuItemOption onClick={() => sortByLatest()} value="Latest">
+          <MenuOptionGroup defaultValue={text} title='Sort By' type='radio'>
+            <MenuItemOption onClick={() => sortByLatest()} value='Latest'>
               Latest
             </MenuItemOption>
-            <MenuItemOption onClick={() => sortByTop()} value="Top">
+            <MenuItemOption onClick={() => sortByTop()} value='Top'>
               Top
             </MenuItemOption>
           </MenuOptionGroup>
         </MenuList>
       </Menu>
-      <VStack mt={4} spacing="1.5rem">
+      <VStack mt={4} spacing='1.5rem'>
         {!posts && isFetching && (
           <>
-            <Skeleton height="100px" w="full" />
-            <Skeleton height="100px" w="full" />
-            <Skeleton height="100px" w="full" />
+            <Skeleton height='100px' w='full' />
+            <Skeleton height='100px' w='full' />
+            <Skeleton height='100px' w='full' />
           </>
         )}
         {posts &&
