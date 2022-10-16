@@ -1,11 +1,11 @@
-import { Button } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
+import PostsContainer from '../features/posts/PostsContainer';
 
 const Home = () => {
   return (
-    <>
-      <h1>This is home</h1>
-      <Button>Sign Up</Button>
-    </>
+    <Box>
+      <PostsContainer />
+    </Box>
   );
 };
 

@@ -9,5 +9,7 @@ const getPostById = async (id: string) => {
 };
 
 export const usePost = (id: string) => {
-  return useQuery(['posts', id], () => getPostById(id));
+  return useQuery(['posts', id], () => getPostById(id), {
+    refetchOnWindowFocus: false,
+  });
 };

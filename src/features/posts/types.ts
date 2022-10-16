@@ -13,6 +13,7 @@ export type TPostAuthor =
       firstName: string;
       lastName: string;
       _id: string;
+      fullname: string;
     }
   | null
   | undefined;

@@ -19,7 +19,8 @@ const PostCard = ({ title, author, likes, _id, createdAt }: IPost) => {
       </Box>
       <Heading
         as="h3"
-        whiteSpace="nowrap"
+        maxH="3em"
+        // whiteSpace="nowrap"
         textOverflow="ellipsis"
         overflow="hidden"
         fontSize="2xl"

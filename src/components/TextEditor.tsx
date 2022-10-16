@@ -109,7 +109,13 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
   } = useToolSettings(editor);
 
   return (
-    <Flex wrap="wrap" gap={0} justifyContent="flex-start">
+    <Flex
+      wrap="wrap"
+      gap={0}
+      justifyContent="flex-start"
+      borderBottom="1px"
+      borderColor="blackAlpha.200"
+    >
       <ToolbarBtn
         onClick={toggleBold}
         isActiveSetting={editor.isActive('bold')}
