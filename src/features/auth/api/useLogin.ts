@@ -10,6 +10,10 @@ const login = async (loginCreds: ILoginCreds) => {
     body: JSON.stringify(loginCreds),
   });
 
+  if (res.status >= 500) {
+    throw new Error('Server Error.');
+  }
+
   const data = await res.json();
 
   if (!res.ok) {
