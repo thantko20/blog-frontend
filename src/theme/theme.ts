@@ -7,6 +7,7 @@ const theme = extendTheme(
     styles: {
       global: (props: StyleFunctionProps) => ({
         body: {
+          fontFamily: "'Poppins', sans-serif",
           color: mode('gray.900', 'gray.100')(props),
           bg: mode('gray.50', 'gray.900')(props),
           '.ProseMirror': {
@@ -77,7 +78,7 @@ const theme = extendTheme(
       }),
     },
   },
-  withProse()
+  withProse(),
 );
 
 export default theme;
