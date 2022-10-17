@@ -9,4 +9,6 @@ export interface IComment {
   likes: string[];
   postId: string;
   _id: string;
+  createdAt: string;
+  updatedAt: string;
 }
