@@ -87,10 +87,10 @@ const ToolbarBtn = ({
     <IconButton
       onClick={onClick}
       variant={variant}
-      size="xs"
-      colorScheme="facebook"
-      border="none"
-      borderRadius="sm"
+      size='xs'
+      colorScheme='facebook'
+      border='none'
+      borderRadius='sm'
       {...props}
     />
   );
@@ -110,60 +110,70 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
 
   return (
     <Flex
-      wrap="wrap"
+      wrap='wrap'
       gap={0}
-      justifyContent="flex-start"
-      borderBottom="1px"
-      borderColor="blackAlpha.200"
+      justifyContent='flex-start'
+      borderBottom='1px'
+      borderColor='blackAlpha.200'
     >
       <ToolbarBtn
         onClick={toggleBold}
         isActiveSetting={editor.isActive('bold')}
         icon={<FaBold />}
-        aria-label="bold"
+        aria-label='bold'
       />
       <ToolbarBtn
         onClick={toggleItalic}
         isActiveSetting={editor.isActive('italic')}
         icon={<FaItalic />}
-        aria-label="italic"
+        aria-label='italic'
       />
       <ToolbarBtn
         onClick={toggleHeading2}
         isActiveSetting={editor.isActive('heading', { level: 2 })}
         icon={<FaHeading />}
-        aria-label="heading"
+        aria-label='heading'
       />
       <ToolbarBtn
         onClick={toggleBullet}
         isActiveSetting={editor.isActive('bulletlist')}
         icon={<FaListUl />}
-        aria-label="bulletlist"
+        aria-label='bulletlist'
       />
       <ToolbarBtn
         onClick={toggleOrderedList}
         isActiveSetting={editor.isActive('orderedList')}
         icon={<FaListOl />}
-        aria-label="ordered list"
+        aria-label='ordered list'
       />
       <ToolbarBtn
         onClick={toggleCode}
         isActiveSetting={editor.isActive('code')}
         icon={<FaCode />}
-        aria-label="code"
+        aria-label='code'
       />
       <ToolbarBtn
         onClick={toggleCodeBlock}
         isActiveSetting={editor.isActive('codeBlock')}
         icon={<BiCodeBlock />}
-        aria-label="codeblock"
+        aria-label='codeblock'
       />
-      <ToolbarBtn onClick={setLink} icon={<FaLink />} aria-label="link" />
+      <ToolbarBtn onClick={setLink} icon={<FaLink />} aria-label='link' />
     </Flex>
   );
 };
 
-const TextEditor = ({ onChange }: { onChange: (value: string) => void }) => {
+interface TextEditorProps {
+  onChange: (value: string) => void;
+  placeholder?: string;
+  initialContent?: string;
+}
+
+const TextEditor = ({
+  onChange,
+  placeholder = '',
+  initialContent = '',
+}: TextEditorProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -175,7 +185,7 @@ const TextEditor = ({ onChange }: { onChange: (value: string) => void }) => {
         openOnClick: false,
       }),
     ],
-    content: '',
+    content: initialContent,
     onUpdate({ editor }) {
       onChange(editor.getHTML());
     },
@@ -185,13 +195,13 @@ const TextEditor = ({ onChange }: { onChange: (value: string) => void }) => {
 
   return (
     <Box
-      border="1px"
-      borderColor="gray.300"
-      borderRadius="base"
-      overflow="hidden"
+      border='1px'
+      borderColor='gray.300'
+      borderRadius='base'
+      overflow='hidden'
     >
       <Toolbar editor={editor} />
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor} placeholder={placeholder} />
     </Box>
   );
 };
