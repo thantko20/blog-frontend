@@ -72,8 +72,14 @@ const Post = () => {
           <Box>
             <Box>
               <Box>
-                <HStack>
-                  <Box as='span' fontSize='2xl' fontWeight='semibold'>
+                <Heading as='h1'>{post?.title}</Heading>
+                <HStack mt={2}>
+                  <Box
+                    as='span'
+                    fontSize='lg'
+                    fontWeight='semibold'
+                    color='blue.400'
+                  >
                     {post.author ? post.author.fullname : 'Unknown'}
                   </Box>
                   <span>&bull;</span>
@@ -81,9 +87,6 @@ const Post = () => {
                     {format(new Date(post.createdAt), 'dd MMM yyyy')}
                   </Box>
                 </HStack>
-                <Heading as='h1' mt={4}>
-                  {post?.title}
-                </Heading>
               </Box>
               <Box
                 dangerouslySetInnerHTML={{ __html: post?.content as string }}
