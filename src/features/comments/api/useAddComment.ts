@@ -1,17 +1,10 @@
-import { useAuth } from '../../auth/AuthProvider';
+import { QueryClient, useMutation } from '@tanstack/react-query';
 import { IComment } from '../types';
 
-const addComment = async ({
-  content,
-  postId,
-}: {
-  content: string;
-  postId: string;
-}) => {
-  const { user } = useAuth();
+const addComment = async (content: string, postId: string) => {
   const token = localStorage.getItem('auth-token');
 
-  if (!token && !user) {
+  if (!token) {
     throw new Error('Please login to comment on this post.');
   }
 
@@ -35,4 +28,13 @@ const addComment = async ({
   }
 
   return data.data as IComment[];
+};
+
+export const useAddComment = (postId: string) => {
+  const queryClient = new QueryClient();
+  return useMutation((content: string) => addComment(content, postId), {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['comments', { postId }], data);
+    },
+  });
 };
