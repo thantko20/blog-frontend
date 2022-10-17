@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/:path(.*)",
-      "destination": "https://bloggy-backend-4eua.onrender.com"
+      "destination": "https://bloggy-backend-4eua.onrender.com/:path"
     }
   ]
 }
