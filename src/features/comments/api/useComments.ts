@@ -9,5 +9,5 @@ const getComments = async (postId: string) => {
 };
 
 export const useComments = (postId: string) => {
-  return useQuery(['comments', { postId }], () => getComments(postId));
+  return useQuery(['comments', { postId: postId }], () => getComments(postId));
 };

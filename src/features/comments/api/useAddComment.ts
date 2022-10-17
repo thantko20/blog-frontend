@@ -1,7 +1,13 @@
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { IComment } from '../types';
 
-const addComment = async (content: string, postId: string) => {
+const addComment = async ({
+  content,
+  postId,
+}: {
+  content: string;
+  postId: string;
+}) => {
   const token = localStorage.getItem('auth-token');
 
   if (!token) {
@@ -30,11 +36,11 @@ const addComment = async (content: string, postId: string) => {
   return data.data as IComment[];
 };
 
-export const useAddComment = (postId: string) => {
-  const queryClient = new QueryClient();
-  return useMutation((content: string) => addComment(content, postId), {
-    onSuccess: (data) => {
-      queryClient.setQueryData(['comments', { postId }], data);
+export const useAddComment = () => {
+  const queryClient = useQueryClient();
+  return useMutation(addComment, {
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries(['comments', { postId: variables.postId }]);
     },
   });
 };
