@@ -53,7 +53,7 @@ const Comment = ({
           {author.fullname}
         </Text>
         <Box as='time' fontSize='sm' fontStyle='italic'>
-          {format(new Date(createdAt), "'at' H:mm 'on' do MMM yyyy")}
+          {format(new Date(createdAt), "'at' H:mm 'on' d MMM yyyy")}
         </Box>
       </HStack>
       <Box
