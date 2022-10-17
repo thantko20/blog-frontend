@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/",
+      "source": "/:path(.*)",
       "destination": "https://bloggy-backend-4eua.onrender.com"
     }
   ]
