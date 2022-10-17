@@ -11,19 +11,18 @@ import {
 import { format } from 'date-fns';
 import { FaHeart } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
+import Like from '../../components/Like';
 import { useAuth } from '../auth/AuthProvider';
 import CommentsContainer from '../comments/CommentsContainer';
 import { useLikePost } from './api/useLikePost';
 import { usePost } from './api/usePost';
 
-interface LikesProps {
-  postAuthorId: string;
+interface PostLikeProps {
   likes: string[];
   postId: string;
-  refetch: () => void;
 }
 
-const Like = ({ postAuthorId, likes, postId, refetch }: LikesProps) => {
+const PostLike = ({ likes, postId }: PostLikeProps) => {
   const { user } = useAuth();
   const hasLiked = likes.includes(user?._id as string);
   const mutation = useLikePost();
@@ -47,26 +46,12 @@ const Like = ({ postAuthorId, likes, postId, refetch }: LikesProps) => {
   };
 
   return (
-    <HStack spacing={2}>
-      <IconButton
-        icon={
-          <FaHeart
-            stroke={hasLiked ? 'transparent' : 'black'}
-            strokeWidth="36px"
-            fill={hasLiked ? 'currentColor' : 'transparent'}
-          />
-        }
-        aria-label="like"
-        onClick={onClickLike}
-        variant="ghost"
-        colorScheme="red"
-        rounded="full"
-        size="sm"
-      />
-      <Text fontWeight="bold" fontSize="sm">
-        {likes.length}
-      </Text>
-    </HStack>
+    <Like
+      hasLiked={hasLiked}
+      likes={likes}
+      likesCount={likes.length}
+      onClickLike={onClickLike}
+    />
   );
 };
 
@@ -78,8 +63,8 @@ const Post = () => {
     <Box>
       {!post && isFetching && (
         <VStack>
-          <Skeleton w="full" height="100px" />
-          <Skeleton w="full" height="400px" />
+          <Skeleton w='full' height='100px' />
+          <Skeleton w='full' height='400px' />
         </VStack>
       )}
       {post && !isFetching && (
@@ -88,31 +73,30 @@ const Post = () => {
             <Box>
               <Box>
                 <HStack>
-                  <Box as="span" fontSize="2xl" fontWeight="semibold">
+                  <Box as='span' fontSize='2xl' fontWeight='semibold'>
                     {post.author ? post.author.fullname : 'Unknown'}
                   </Box>
                   <span>&bull;</span>
-                  <Box as="time" fontSize="sm">
+                  <Box as='time' fontSize='sm'>
                     {format(new Date(post.createdAt), 'dd MMM yyyy')}
                   </Box>
                 </HStack>
-                <Heading as="h1" mt={4}>
+                <Heading as='h1' mt={4}>
                   {post?.title}
                 </Heading>
               </Box>
               <Box
                 dangerouslySetInnerHTML={{ __html: post?.content as string }}
-                className="prose"
+                className='prose'
                 mt={10}
               ></Box>
-              <Like
-                postAuthorId={post.author?._id as string}
-                likes={post.likes}
-                postId={post._id}
-                refetch={refetch}
-              />
+              <Box mt={10}>
+                <PostLike likes={post.likes} postId={post._id} />
+              </Box>
             </Box>
-            <CommentsContainer postId={post._id} />
+            <Box mt={8}>
+              <CommentsContainer postId={post._id} />
+            </Box>
           </Box>
         </>
       )}
