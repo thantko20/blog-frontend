@@ -74,7 +74,7 @@ const initialAuthState: IAuthState = {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [{ user, isLoggedIn, checkingStatus }, dispatch] = useReducer(
     userReducer,
-    initialAuthState
+    initialAuthState,
   );
 
   useEffect(() => {
