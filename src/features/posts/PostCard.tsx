@@ -15,9 +15,11 @@ import { useAuth } from '../auth/AuthProvider';
 import { FaTrash } from 'react-icons/fa';
 import { useDeletePost } from './api/useDeletePost';
 import DeletePost from './DeletePost';
+import EditPostBtn from './EditPostBtn';
 
-const PostCard = ({ title, author, likes, _id, createdAt }: IPost) => {
+const PostCard = (post: IPost) => {
   const { user } = useAuth();
+  const { title, author, likes, _id, createdAt } = post;
 
   return (
     <LinkBox
@@ -34,20 +36,22 @@ const PostCard = ({ title, author, likes, _id, createdAt }: IPost) => {
           {formatDistanceToNow(new Date(createdAt))} ago
         </Box>
         {user && user._id === author?._id ? (
-          <DeletePost
-            authorId={author._id}
-            postId={_id}
-            triggerButton={
-              <IconButton
-                icon={<FaTrash />}
-                aria-label='delete post'
-                colorScheme='red'
-                size='xs'
-                variant='outline'
-                zIndex={2}
-              />
-            }
-          />
+          <HStack zIndex={2}>
+            <EditPostBtn post={post} size='xs' />
+            <DeletePost
+              authorId={author._id}
+              postId={_id}
+              triggerButton={
+                <IconButton
+                  icon={<FaTrash />}
+                  aria-label='delete post'
+                  colorScheme='red'
+                  size='xs'
+                  variant='outline'
+                />
+              }
+            />
+          </HStack>
         ) : null}
       </HStack>
       <Heading

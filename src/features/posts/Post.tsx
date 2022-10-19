@@ -17,6 +17,7 @@ import CommentsContainer from '../comments/CommentsContainer';
 import { useLikePost } from './api/useLikePost';
 import { usePost } from './api/usePost';
 import DeletePost from './DeletePost';
+import EditPostBtn from './EditPostBtn';
 
 interface PostLikeProps {
   likes: string[];
@@ -90,20 +91,23 @@ const Post = () => {
                     {format(new Date(post.createdAt), 'dd MMM yyyy')}
                   </Box>
                   {user?._id === post.author?._id ? (
-                    <DeletePost
-                      authorId={post.author?._id as string}
-                      postId={post._id}
-                      triggerButton={
-                        <IconButton
-                          icon={<FaTrash />}
-                          aria-label='delete post'
-                          colorScheme='red'
-                          size='sm'
-                          variant='outline'
-                        />
-                      }
-                      onSuccess={() => navigate('/')}
-                    />
+                    <>
+                      <EditPostBtn post={post} />
+                      <DeletePost
+                        authorId={post.author?._id as string}
+                        postId={post._id}
+                        triggerButton={
+                          <IconButton
+                            icon={<FaTrash />}
+                            aria-label='delete post'
+                            colorScheme='red'
+                            size='sm'
+                            variant='outline'
+                          />
+                        }
+                        onSuccess={() => navigate('/')}
+                      />
+                    </>
                   ) : null}
                 </HStack>
               </Box>

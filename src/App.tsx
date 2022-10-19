@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import { AuthProvider } from './features/auth/AuthProvider';
 import Post from './features/posts/Post';
 import CreatePost from './pages/CreatePost';
+import EditPost from './pages/EditPost';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
@@ -12,13 +13,14 @@ const App = () => {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path='/' element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/posts/">
-              <Route path=":postId" element={<Post />} />
-              <Route path="create" element={<CreatePost />} />
+            <Route path='/sign-up' element={<SignUp />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/posts/'>
+              <Route path=':postId' element={<Post />} />
+              <Route path='edit' element={<EditPost />} />
+              <Route path='create' element={<CreatePost />} />
             </Route>
           </Route>
         </Routes>

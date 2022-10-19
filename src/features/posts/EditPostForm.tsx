@@ -11,17 +11,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Form from '../../components/Form';
 import TextEditor from '../../components/TextEditor';
-import { useCreatePost } from './api/useCreatePost';
-import { IPostFormData } from './types';
-import { useAuth } from '../auth/AuthProvider';
-import { useNavigate } from 'react-router-dom';
+import { useEditPost } from './api/useEditPost';
+import { IPost, IPostFormData } from './types';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const schema = yup.object({
   title: yup.string().min(2).required(),
   content: yup.string().required(),
 });
 
-const CreatePostForm = () => {
+const EditPostForm = () => {
+  const { state: post } = useLocation() as { state: IPost };
   const {
     register,
     control,
@@ -29,40 +29,38 @@ const CreatePostForm = () => {
     handleSubmit,
   } = useForm<IPostFormData>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      title: post.title,
+    },
   });
-
-  const { isLoggedIn } = useAuth();
-  const mutation = useCreatePost();
+  const mutation = useEditPost();
   const toast = useToast();
   const navigate = useNavigate();
 
   const onSubmit = (formData: IPostFormData) => {
-    if (!isLoggedIn) {
-      toast({
-        title: 'Not logged in.',
-        description: 'Please login to post.',
-        status: 'error',
-        duration: 5000,
-        position: 'top',
-      });
-      return;
-    }
-    mutation.mutate(formData, {
-      onSuccess(postId) {
-        navigate(`/posts/${postId}`);
+    mutation.mutate(
+      {
+        ...formData,
+        postId: post._id,
+        authorId: post.author?._id as string,
       },
-      onError(error) {
-        if (error instanceof Error) {
-          toast({
-            title: error.message,
-            status: 'error',
-            duration: 8000,
-            isClosable: true,
-            position: 'top',
-          });
-        }
+      {
+        onSuccess(postId) {
+          navigate(`/posts/${postId}`);
+        },
+        onError(error) {
+          if (error instanceof Error) {
+            toast({
+              title: error.message,
+              status: 'error',
+              duration: 8000,
+              isClosable: true,
+              position: 'top',
+            });
+          }
+        },
       },
-    });
+    );
   };
 
   return (
@@ -77,15 +75,25 @@ const CreatePostForm = () => {
         <Controller
           name='content'
           control={control}
-          render={({ field }) => <TextEditor onChange={field.onChange} />}
+          render={({ field }) => (
+            <TextEditor
+              onChange={field.onChange}
+              initialContent={post.content}
+            />
+          )}
         />
         <FormErrorMessage>{errors.content?.message}</FormErrorMessage>
       </FormControl>
-      <Button type='submit' colorScheme='blue' variant='solid'>
-        Post
+      <Button
+        type='submit'
+        colorScheme='blue'
+        variant='solid'
+        isLoading={mutation.isLoading}
+      >
+        Edit
       </Button>
     </Form>
   );
 };
 
-export default CreatePostForm;
+export default EditPostForm;
