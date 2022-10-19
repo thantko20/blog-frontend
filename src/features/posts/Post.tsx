@@ -57,6 +57,7 @@ const PostLike = ({ likes, postId }: PostLikeProps) => {
 };
 
 const Post = () => {
+  const { user } = useAuth();
   const { postId } = useParams();
   const { data: post, isFetching, refetch } = usePost(postId as string);
   const navigate = useNavigate();
@@ -88,20 +89,22 @@ const Post = () => {
                   <Box as='time' fontSize='sm'>
                     {format(new Date(post.createdAt), 'dd MMM yyyy')}
                   </Box>
-                  <DeletePost
-                    authorId={post.author?._id as string}
-                    postId={post._id}
-                    triggerButton={
-                      <IconButton
-                        icon={<FaTrash />}
-                        aria-label='delete post'
-                        colorScheme='red'
-                        size='sm'
-                        variant='outline'
-                      />
-                    }
-                    onSuccess={() => navigate('/')}
-                  />
+                  {user?._id === post.author?._id ? (
+                    <DeletePost
+                      authorId={post.author?._id as string}
+                      postId={post._id}
+                      triggerButton={
+                        <IconButton
+                          icon={<FaTrash />}
+                          aria-label='delete post'
+                          colorScheme='red'
+                          size='sm'
+                          variant='outline'
+                        />
+                      }
+                      onSuccess={() => navigate('/')}
+                    />
+                  ) : null}
                 </HStack>
               </Box>
               <Box
