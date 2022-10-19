@@ -3,14 +3,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {
   Button,
-  Container,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
-  Text,
   useToast,
-  VStack,
 } from '@chakra-ui/react';
 import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
@@ -61,18 +58,18 @@ const LoginForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} title="Login">
+    <Form onSubmit={handleSubmit(onSubmit)} title='Login'>
       <FormControl isInvalid={!!errors?.email}>
-        <FormLabel htmlFor="email">Email</FormLabel>
-        <Input {...register('email')} id="email" type="email" />
+        <FormLabel htmlFor='email'>Email</FormLabel>
+        <Input {...register('email')} id='email' type='email' />
         <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
       </FormControl>
       <FormControl isInvalid={!!errors?.password}>
-        <FormLabel htmlFor="password">Password</FormLabel>
-        <Input {...register('password')} id="password" type="password" />
-        <FormErrorMessage as="p">{errors.password?.message}</FormErrorMessage>
+        <FormLabel htmlFor='password'>Password</FormLabel>
+        <Input {...register('password')} id='password' type='password' />
+        <FormErrorMessage as='p'>{errors.password?.message}</FormErrorMessage>
       </FormControl>
-      <Button type="submit" isLoading={mutation.isLoading} colorScheme="blue">
+      <Button type='submit' isLoading={mutation.isLoading} colorScheme='blue'>
         Login
       </Button>
     </Form>
