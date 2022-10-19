@@ -1,8 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/:path(.*)",
-      "destination": "https://bloggy-backend-4eua.onrender.com/:path"
+      "source": "/api/:path(.*)",
+      "destination": "https://bloggy-backend-4eua.onrender.com/api/:path"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

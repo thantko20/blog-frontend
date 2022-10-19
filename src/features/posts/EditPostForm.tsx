@@ -31,6 +31,7 @@ const EditPostForm = () => {
     resolver: yupResolver(schema),
     defaultValues: {
       title: post.title,
+      content: post.content,
     },
   });
   const mutation = useEditPost();
@@ -59,21 +60,21 @@ const EditPostForm = () => {
             });
           }
         },
-      },
+      }
     );
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} title='Create Post'>
+    <Form onSubmit={handleSubmit(onSubmit)} title="Edit Post">
       <FormControl isInvalid={!!errors.title}>
-        <FormLabel htmlFor='title'>Title</FormLabel>
-        <Input {...register('title')} id='title' type='text' />
+        <FormLabel htmlFor="title">Title</FormLabel>
+        <Input {...register('title')} id="title" type="text" />
         <FormErrorMessage>{errors.title?.message}</FormErrorMessage>
       </FormControl>
       <FormControl isInvalid={!!errors.content}>
-        <FormLabel htmlFor='content'>Content</FormLabel>
+        <FormLabel htmlFor="content">Content</FormLabel>
         <Controller
-          name='content'
+          name="content"
           control={control}
           render={({ field }) => (
             <TextEditor
@@ -85,9 +86,9 @@ const EditPostForm = () => {
         <FormErrorMessage>{errors.content?.message}</FormErrorMessage>
       </FormControl>
       <Button
-        type='submit'
-        colorScheme='blue'
-        variant='solid'
+        type="submit"
+        colorScheme="blue"
+        variant="solid"
         isLoading={mutation.isLoading}
       >
         Edit
