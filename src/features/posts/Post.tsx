@@ -114,7 +114,10 @@ const Post = () => {
               </Box>
             </Box>
             <Box mt={8}>
-              <CommentsContainer postId={post._id} />
+              <CommentsContainer
+                postId={post._id}
+                postAuthorId={post.author?._id as string}
+              />
             </Box>
           </Box>
         </>

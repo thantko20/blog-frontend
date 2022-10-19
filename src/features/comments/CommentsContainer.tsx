@@ -55,7 +55,15 @@ const AddComment = ({
   );
 };
 
-const CommentsContainer = ({ postId }: { postId: string }) => {
+interface CommentsContainerProps {
+  postId: string;
+  postAuthorId: string;
+}
+
+const CommentsContainer = ({
+  postId,
+  postAuthorId,
+}: CommentsContainerProps) => {
   const { data: comments, isFetching, refetch } = useComments(postId);
 
   return (
@@ -67,7 +75,13 @@ const CommentsContainer = ({ postId }: { postId: string }) => {
       <VStack spacing={4} mt={4} alignItems='stretch'>
         {comments &&
           !isFetching &&
-          comments.map((comment) => <Comment {...comment} key={comment._id} />)}
+          comments.map((comment) => (
+            <Comment
+              {...comment}
+              postAuthorId={postAuthorId}
+              key={comment._id}
+            />
+          ))}
 
         {isFetching && !comments && (
           <>

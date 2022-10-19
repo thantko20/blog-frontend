@@ -1,9 +1,10 @@
-import { Box, HStack, Text, VStack } from '@chakra-ui/react';
-import { QueryClient } from '@tanstack/react-query';
+import { Box, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
 import { format } from 'date-fns';
+import { FaTrash } from 'react-icons/fa';
 import Like from '../../components/Like';
 import { useAuth } from '../auth/AuthProvider';
 import { useLikeComment } from './api/useLikeComment';
+import DeletePost from './DeleteComment';
 import { IComment } from './types';
 
 interface CommentLikeProps {
@@ -31,6 +32,10 @@ const CommentLike = ({ commentId, postId, likes }: CommentLikeProps) => {
   );
 };
 
+interface CommentProps extends IComment {
+  postAuthorId: string;
+}
+
 const Comment = ({
   _id,
   author,
@@ -38,7 +43,29 @@ const Comment = ({
   likes,
   postId,
   createdAt,
-}: IComment) => {
+  postAuthorId,
+}: CommentProps) => {
+  const { user } = useAuth();
+
+  const deleteBtn =
+    user && (author._id === user._id || postAuthorId === user._id) ? (
+      <DeletePost
+        authorId={author._id}
+        commentId={_id}
+        postId={postId}
+        triggerButton={
+          <IconButton
+            icon={<FaTrash />}
+            aria-label='delete post'
+            colorScheme='red'
+            size='xs'
+            variant='outline'
+            zIndex={2}
+          />
+        }
+      />
+    ) : null;
+
   return (
     <VStack
       spacing={4}
@@ -55,6 +82,7 @@ const Comment = ({
         <Box as='time' fontSize='sm' fontStyle='italic'>
           {format(new Date(createdAt), "'at' H:mm 'on' d MMM yyyy")}
         </Box>
+        {deleteBtn}
       </HStack>
       <Box
         dangerouslySetInnerHTML={{ __html: content }}
