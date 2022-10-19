@@ -9,13 +9,14 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import { FaHeart } from 'react-icons/fa';
-import { useParams } from 'react-router-dom';
+import { FaHeart, FaTrash } from 'react-icons/fa';
+import { useNavigate, useParams } from 'react-router-dom';
 import Like from '../../components/Like';
 import { useAuth } from '../auth/AuthProvider';
 import CommentsContainer from '../comments/CommentsContainer';
 import { useLikePost } from './api/useLikePost';
 import { usePost } from './api/usePost';
+import DeletePost from './DeletePost';
 
 interface PostLikeProps {
   likes: string[];
@@ -58,6 +59,7 @@ const PostLike = ({ likes, postId }: PostLikeProps) => {
 const Post = () => {
   const { postId } = useParams();
   const { data: post, isFetching, refetch } = usePost(postId as string);
+  const navigate = useNavigate();
 
   return (
     <Box>
@@ -86,6 +88,20 @@ const Post = () => {
                   <Box as='time' fontSize='sm'>
                     {format(new Date(post.createdAt), 'dd MMM yyyy')}
                   </Box>
+                  <DeletePost
+                    authorId={post.author?._id as string}
+                    postId={post._id}
+                    triggerButton={
+                      <IconButton
+                        icon={<FaTrash />}
+                        aria-label='delete post'
+                        colorScheme='red'
+                        size='sm'
+                        variant='outline'
+                      />
+                    }
+                    onSuccess={() => navigate('/')}
+                  />
                 </HStack>
               </Box>
               <Box
