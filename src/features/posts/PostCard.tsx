@@ -1,11 +1,24 @@
-import { Link as RouterLink } from 'react-router-dom';
-import { Box, Heading, LinkBox, LinkOverlay, Text } from '@chakra-ui/react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Heading,
+  HStack,
+  IconButton,
+  LinkBox,
+  LinkOverlay,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
 import { formatDistanceToNow } from 'date-fns';
 import { IPost } from './types';
 import { useAuth } from '../auth/AuthProvider';
+import { FaTrash } from 'react-icons/fa';
+import { useDeletePost } from './api/useDeletePost';
+import DeletePost from './DeletePost';
 
 const PostCard = ({ title, author, likes, _id, createdAt }: IPost) => {
   const { user } = useAuth();
+
   return (
     <LinkBox
       as='article'
@@ -16,17 +29,35 @@ const PostCard = ({ title, author, likes, _id, createdAt }: IPost) => {
       role='group'
       bgColor='whiteAlpha.900'
     >
-      <Box as='time' dateTime={createdAt} fontSize='sm' color='gray.600'>
-        {formatDistanceToNow(new Date(createdAt))} ago
-      </Box>
+      <HStack justifyContent='space-between'>
+        <Box as='time' dateTime={createdAt} fontSize='sm' color='gray.600'>
+          {formatDistanceToNow(new Date(createdAt))} ago
+        </Box>
+        {user && user._id === author?._id ? (
+          <DeletePost
+            authorId={author._id}
+            postId={_id}
+            triggerButton={
+              <IconButton
+                icon={<FaTrash />}
+                aria-label='delete post'
+                colorScheme='red'
+                size='xs'
+                variant='outline'
+                zIndex={2}
+              />
+            }
+          />
+        ) : null}
+      </HStack>
       <Heading
         as='h3'
         maxH='3em'
-        // whiteSpace="nowrap"
         textOverflow='ellipsis'
         overflow='hidden'
         fontSize='2xl'
         title={title}
+        mt={4}
       >
         <LinkOverlay
           as={RouterLink}
