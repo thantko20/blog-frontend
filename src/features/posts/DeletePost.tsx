@@ -21,9 +21,15 @@ interface DeletePostProps {
   postId: string;
   triggerButton: ReactElement<IconButtonProps | ButtonProps>;
   authorId: string;
+  onSuccess?: () => void;
 }
 
-const DeletePost = ({ postId, triggerButton, authorId }: DeletePostProps) => {
+const DeletePost = ({
+  postId,
+  triggerButton,
+  authorId,
+  onSuccess,
+}: DeletePostProps) => {
   const { user } = useAuth();
   const mutation = useDeletePost();
   const toast = useToast();
@@ -41,6 +47,7 @@ const DeletePost = ({ postId, triggerButton, authorId }: DeletePostProps) => {
         isClosable: true,
         duration: 5000,
       });
+      onSuccess && onSuccess();
     }
   };
 
