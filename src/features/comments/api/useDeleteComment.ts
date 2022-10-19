@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { IComment } from '../types';
 
@@ -38,12 +39,24 @@ const deleteComment = async ({
 
 export const useDeleteComment = () => {
   const queryClient = useQueryClient();
+  // May be move toast on error in fn component
+  const toast = useToast();
   return useMutation(deleteComment, {
     onSuccess: (data, variables) => {
       queryClient.setQueryData(
         ['comments', { postId: variables.postId }],
         data,
       );
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast({
+          title: error.message,
+          duration: 6000,
+          position: 'top',
+          status: 'error',
+        });
+      }
     },
   });
 };
